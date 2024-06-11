@@ -1,3 +1,5 @@
+[![build-FreshGCC-OldMinGW-w64](https://github.com/zxunge/build-FreshGCC-OldMinGW-w64/actions/workflows/build-FreshGCC-OldMinGW-w64.yml/badge.svg)](https://github.com/zxunge/build-FreshGCC-OldMinGW-w64/actions/workflows/build-FreshGCC-OldMinGW-w64.yml)
+
 Automatic 32-bit and 64-bit Windows build of fresher [gcc][] compiler and older [mingw-w64][] runtime.
 
 Builds are linked statically to their dependencies and provide only static runtime libraries (libstdc++, libgomp, libwinpthread and others).
