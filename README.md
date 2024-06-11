@@ -1,4 +1,4 @@
-Automatic 32-bit and 64-bit Windows build of [gcc][] compiler, [mingw-w64][] runtime, [gdb][] debugger and [make][].
+Automatic 32-bit and 64-bit Windows build of fresher [gcc][] compiler and older [mingw-w64][] runtime.
 
 Builds are linked statically to their dependencies and provide only static runtime libraries (libstdc++, libgomp, libwinpthread and others).
 
@@ -18,6 +18,4 @@ To build binaries using Docker, run:
 
 [gcc]: https://gcc.gnu.org/
 [mingw-w64]: http://mingw-w64.org/
-[gdb]: https://www.gnu.org/software/gdb/
-[make]: https://www.gnu.org/software/make/
-[latest release]: https://github.com/mmozeiko/build-gcc-mingw/releases/latest
+[latest release]: https://github.com/zxunge/build-FreshGCC-OldMinGW-w64/releases/latest
