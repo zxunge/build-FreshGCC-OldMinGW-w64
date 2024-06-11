@@ -9,19 +9,17 @@ MPC_VERSION=1.3.1
 ISL_VERSION=0.26
 EXPAT_VERSION=2.6.2
 BINUTILS_VERSION=2.42
-GCC_VERSION=14.1.0
-MINGW_VERSION=11.0.1
-MAKE_VERSION=4.2.1
-GDB_VERSION=14.2
+GCC_VERSION=7.0.0
+MINGW_VERSION=5.0.0
 
 ARG=${1:-64}
 if [ "${ARG}" == "32" ]; then
-  NAME=gcc-v${GCC_VERSION}-mingw-v${MINGW_VERSION}-i686
+  NAME=gcc-v${GCC_VERSION}-mingw-w64-v${MINGW_VERSION}-i686
   TARGET=i686-w64-mingw32
   EXTRA_CRT_ARGS=--disable-lib64
   EXTRA_GCC_ARGS="--disable-sjlj-exceptions --with-dwarf2"
 elif [ "${ARG}" == "64" ]; then
-  NAME=gcc-v${GCC_VERSION}-mingw-v${MINGW_VERSION}-x86_64
+  NAME=gcc-v${GCC_VERSION}-mingw-w64-v${MINGW_VERSION}-x86_64
   TARGET=x86_64-w64-mingw32
   EXTRA_CRT_ARGS=--disable-lib32
   EXTRA_GCC_ARGS=
@@ -80,10 +78,6 @@ get https://github.com/libexpat/libexpat/releases/download/R_${EXPAT_VERSION//./
 get https://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
 get https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz
 get https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v${MINGW_VERSION}.tar.bz2
-get https://ftp.gnu.org/gnu/gdb/gdb-${GDB_VERSION}.tar.xz
-get https://ftp.gnu.org/gnu/make/make-${MAKE_VERSION}.tar.bz2
-
-curl -Lsf "https://sourceware.org/git/?p=binutils-gdb.git;a=patch;h=45e83f865876e42d22cf4bc242725bb4a25a12e3" | patch -t -N -p1 -d ${SOURCE}/gdb-${GDB_VERSION} || true
 
 FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -317,31 +311,6 @@ make -j`nproc`
 make install
 popd
 
-mkdir -p ${BUILD}/gdb && pushd ${BUILD}/gdb
-${SOURCE}/gdb-${GDB_VERSION}/configure \
-  --prefix=${FINAL}                    \
-  --host=${TARGET}                     \
-  --enable-64-bit-bfd                  \
-  --disable-werror                     \
-  --disable-source-highlight           \
-  --with-static-standard-libraries     \
-  --with-libexpat-prefix=${PREFIX}     \
-  --with-{gmp,mpfr,mpc,isl,zstd}=${PREFIX}
-make -j`nproc`
-cp gdb/.libs/gdb.exe gdbserver/gdbserver.exe ${FINAL}/bin/
-popd
-
-mkdir -p ${BUILD}/make && pushd ${BUILD}/make
-${SOURCE}/make-${MAKE_VERSION}/configure \
-  --prefix=${FINAL}                      \
-  --host=${TARGET}                       \
-  --disable-nls                          \
-  --disable-rpath                        \
-  --enable-case-insensitive-file-system
-make -j`nproc`
-make install
-popd
-
 rm -rf ${FINAL}/bin/${TARGET}-*
 rm -rf ${FINAL}/bin/ld.bfd.exe ${FINAL}/${TARGET}/bin/ld.bfd.exe
 rm -rf ${FINAL}/lib/bfd-plugins/libdep.dll.a
@@ -358,9 +327,7 @@ rm ${FINAL}/mingw
 if [[ -v GITHUB_WORKFLOW ]]; then
   echo "::set-output name=GCC_VERSION::${GCC_VERSION}"
   echo "::set-output name=MINGW_VERSION::${MINGW_VERSION}"
-  echo "::set-output name=GDB_VERSION::${GDB_VERSION}"
-  echo "::set-output name=MAKE_VERSION::${MAKE_VERSION}"
   echo "::set-output name=OUTPUT_BINARY::${NAME}.7z"
-  echo "::set-output name=RELEASE_NAME::gcc-v${GCC_VERSION}-mingw-v${MINGW_VERSION}"
+  echo "::set-output name=RELEASE_NAME::gcc-v${GCC_VERSION}-mingw-w64-v${MINGW_VERSION}"
   rm -rf "${BUILD}" "${BOOTSTRAP}" "${PREFIX}" "${FINAL}"
 fi
