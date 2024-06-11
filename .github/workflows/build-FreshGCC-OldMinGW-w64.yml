@@ -36,9 +36,7 @@ jobs:
         id: build32
         run: ./build.sh 32
 
-      - name: build 64-bit
-        id: build64
-        run: ./build.sh 64
+      
         
       - name: release
         id: release
@@ -46,11 +44,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.build64.outputs.RELEASE_NAME }}
-          release_name: ${{ steps.build64.outputs.RELEASE_NAME }}
+          tag_name: ${{ steps.build32.outputs.RELEASE_NAME }}
+          release_name: ${{ steps.build32.outputs.RELEASE_NAME }}
           body: |
-            GCC v${{ steps.build64.outputs.GCC_VERSION }}
-            MinGW-w64 v${{ steps.build64.outputs.MINGW_VERSION }}
+            GCC v${{ steps.build32.outputs.GCC_VERSION }}
+            MinGW-w64 v${{ steps.build32.outputs.MINGW_VERSION }}
 
       - name: upload 32-bit
         id: upload32
@@ -63,13 +61,4 @@ jobs:
           asset_name: ${{ steps.build32.outputs.OUTPUT_BINARY }}
           asset_content_type: application/x-7z-compressed
 
-      - name: upload 64-bit
-        id: upload64
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ./${{ steps.build64.outputs.OUTPUT_BINARY }}
-          asset_name: ${{ steps.build64.outputs.OUTPUT_BINARY }}
-          asset_content_type: application/x-7z-compressed
+      
