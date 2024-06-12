@@ -10,7 +10,7 @@ ISL_VERSION=0.26
 EXPAT_VERSION=2.6.2
 BINUTILS_VERSION=2.42
 GCC_VERSION=10.5.0
-MINGW_VERSION=5.0.5
+MINGW_VERSION=6.0.1
 
 ARG=${1:-64}
 if [ "${ARG}" == "32" ]; then
@@ -86,9 +86,7 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --prefix=${BOOTSTRAP}                          \
   --with-sysroot=${BOOTSTRAP}                    \
   --target=${TARGET}                             \
-  --disable-plugins                              \
-  --disable-nls                                  \
-  --disable-shared                               \
+  --disable-nls                                  \                
   --disable-multilib                             \
   --disable-werror
 make -j`nproc`
@@ -109,8 +107,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --prefix=${BOOTSTRAP}                \
   --with-sysroot=${BOOTSTRAP}          \
   --target=${TARGET}                   \
-  --enable-static                      \
-  --disable-shared                     \
   --disable-lto                        \
   --disable-nls                        \
   --disable-multilib                   \
@@ -147,8 +143,6 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${BOOTSTRAP}                                                   \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
-  --enable-static                                                               \
-  --disable-shared
 make -j`nproc`
 make install
 popd
@@ -167,8 +161,7 @@ cmake ${SOURCE}/zstd-${ZSTD_VERSION}/build/cmake \
   -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY       \
   -DCMAKE_C_COMPILER=${TARGET}-gcc               \
   -DCMAKE_CXX_COMPILER=${TARGET}-g++             \
-  -DZSTD_BUILD_STATIC=ON                         \
-  -DZSTD_BUILD_SHARED=OFF                        \
+  -DZSTD_BUILD_SHARED=ON                        \
   -DZSTD_BUILD_PROGRAMS=OFF                      \
   -DZSTD_BUILD_CONTRIB=OFF                       \
   -DZSTD_BUILD_TESTS=OFF
@@ -180,8 +173,6 @@ mkdir -p ${BUILD}/gmp && pushd ${BUILD}/gmp
 ${SOURCE}/gmp-${GMP_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --disable-shared                     \
-  --enable-static                      \
   --enable-fat
 make -j`nproc`
 make install
@@ -191,8 +182,6 @@ mkdir -p ${BUILD}/mpfr && pushd ${BUILD}/mpfr
 ${SOURCE}/mpfr-${MPFR_VERSION}/configure \
   --prefix=${PREFIX}                     \
   --host=${TARGET}                       \
-  --disable-shared                       \
-  --enable-static                        \
   --with-gmp-build=${BUILD}/gmp
 make -j`nproc`
 make install
@@ -202,8 +191,6 @@ mkdir -p ${BUILD}/mpc && pushd ${BUILD}/mpc
 ${SOURCE}/mpc-${MPC_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --disable-shared                     \
-  --enable-static                      \
   --with-{gmp,mpfr}=${PREFIX}
 make -j`nproc`
 make install
@@ -213,8 +200,6 @@ mkdir -p ${BUILD}/isl && pushd ${BUILD}/isl
 ${SOURCE}/isl-${ISL_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --disable-shared                     \
-  --enable-static                      \
   --with-gmp-prefix=${PREFIX}
 make -j`nproc`
 make install
@@ -224,8 +209,6 @@ mkdir -p ${BUILD}/expat && pushd ${BUILD}/expat
 ${SOURCE}/expat-${EXPAT_VERSION}/configure \
   --prefix=${PREFIX}                       \
   --host=${TARGET}                         \
-  --disable-shared                         \
-  --enable-static                          \
   --without-examples                       \
   --without-tests
 make -j`nproc`
@@ -280,8 +263,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-nls                        \
   --disable-multilib                   \
   --disable-werror                     \
-  --disable-shared                     \
-  --enable-static                      \
   --enable-lto                         \
   --enable-languages=c,c++,lto         \
   --enable-libgomp                     \
@@ -305,8 +286,6 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${FINAL}/${TARGET}                                             \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
-  --disable-shared                                                              \
-  --enable-static
 make -j`nproc`
 make install
 popd
