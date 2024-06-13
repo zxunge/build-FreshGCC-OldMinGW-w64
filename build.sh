@@ -87,7 +87,6 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --with-sysroot=${BOOTSTRAP}                    \
   --target=${TARGET}                             \
   --disable-plugins                              \
-  --disable-nls                                  \
   --disable-shared                               \
   --disable-multilib                             \
   --disable-werror
@@ -111,8 +110,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --target=${TARGET}                   \
   --enable-static                      \
   --disable-shared                     \
-  --disable-lto                        \
-  --disable-nls                        \
   --disable-multilib                   \
   --disable-werror                     \
   --disable-libgomp                    \
@@ -241,7 +238,6 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --enable-lto                                   \
   --enable-plugins                               \
   --enable-64-bit-bfd                            \
-  --disable-nls                                  \
   --disable-multilib                             \
   --disable-werror                               \
   --with-{gmp,mpfr,mpc,isl}=${PREFIX}
@@ -277,7 +273,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --target=${TARGET}                   \
   --host=${TARGET}                     \
   --disable-dependency-tracking        \
-  --disable-nls                        \
   --disable-multilib                   \
   --disable-werror                     \
   --disable-shared                     \
