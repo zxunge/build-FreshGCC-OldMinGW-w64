@@ -17,6 +17,7 @@ jobs:
         run: |
           sudo apt-get install --no-install-recommends -y \
             ca-certificates \
+            gettext         \
             libgmp-dev      \
             libmpc-dev      \
             libmpfr-dev     \
