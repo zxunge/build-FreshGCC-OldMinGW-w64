@@ -114,7 +114,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --enable-checking=release            \
   --enable-large-address-aware         \
   ${EXTRA_GCC_ARGS}
-make -j8 all-gcc
+make -j10 all-gcc
 make install-gcc
 popd
 
@@ -167,6 +167,7 @@ mkdir -p ${BUILD}/gmp && pushd ${BUILD}/gmp
 ${SOURCE}/gmp-${GMP_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
+  --enable-shared                      \
   --enable-fat
 make -j8
 make install
@@ -267,7 +268,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --with-tune=intel                    \
   ${EXTRA_GCC_ARGS}                    \
   --with-{gmp,mpfr,mpc,isl,zstd}=${PREFIX}
-make -j8
+make -j10
 make install
 popd
 
