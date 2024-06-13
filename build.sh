@@ -86,9 +86,6 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --prefix=${BOOTSTRAP}                          \
   --with-sysroot=${BOOTSTRAP}                    \
   --target=${TARGET}                             \
-  --disable-plugins                              \
-  --disable-nls                                  \
-  --enable-shared                               \
   --disable-multilib                             \
   --disable-werror
 make -j`nproc`
@@ -109,10 +106,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --prefix=${BOOTSTRAP}                \
   --with-sysroot=${BOOTSTRAP}          \
   --target=${TARGET}                   \
-  --disable-static                     \
-  --enable-shared                      \
-  --disable-lto                        \
-  --disable-nls                        \
   --disable-multilib                   \
   --disable-werror                     \
   --disable-libgomp                    \
@@ -120,8 +113,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --enable-threads=posix               \
   --enable-checking=release            \
   --enable-large-address-aware         \
-  --disable-libstdcxx-pch              \
-  --disable-libstdcxx-verbose          \
   ${EXTRA_GCC_ARGS}
 make -j`nproc` all-gcc
 make install-gcc
@@ -146,9 +137,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --prefix=${BOOTSTRAP}                                                         \
   --with-sysroot=${BOOTSTRAP}                                                   \
   --host=${TARGET}                                                              \
-  --disable-dependency-tracking                                                 \
-  --disable-static                                                              \
-  --enable-shared
+  --disable-dependency-tracking                                                 
 make -j`nproc`
 make install
 popd
@@ -167,8 +156,6 @@ cmake ${SOURCE}/zstd-${ZSTD_VERSION}/build/cmake \
   -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY       \
   -DCMAKE_C_COMPILER=${TARGET}-gcc               \
   -DCMAKE_CXX_COMPILER=${TARGET}-g++             \
-  -DZSTD_BUILD_STATIC=OFF                        \
-  -DZSTD_BUILD_SHARED=ON                         \
   -DZSTD_BUILD_PROGRAMS=OFF                      \
   -DZSTD_BUILD_CONTRIB=OFF                       \
   -DZSTD_BUILD_TESTS=OFF
@@ -180,8 +167,6 @@ mkdir -p ${BUILD}/gmp && pushd ${BUILD}/gmp
 ${SOURCE}/gmp-${GMP_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --enable-shared                      \
-  --disable-static                     \
   --enable-fat
 make -j`nproc`
 make install
@@ -191,8 +176,6 @@ mkdir -p ${BUILD}/mpfr && pushd ${BUILD}/mpfr
 ${SOURCE}/mpfr-${MPFR_VERSION}/configure \
   --prefix=${PREFIX}                     \
   --host=${TARGET}                       \
-  --enable-shared                        \
-  --disable-static                       \
   --with-gmp-build=${BUILD}/gmp
 make -j`nproc`
 make install
@@ -202,8 +185,6 @@ mkdir -p ${BUILD}/mpc && pushd ${BUILD}/mpc
 ${SOURCE}/mpc-${MPC_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --enable-shared                      \
-  --disable-static                     \
   --with-{gmp,mpfr}=${PREFIX}
 make -j`nproc`
 make install
@@ -213,8 +194,6 @@ mkdir -p ${BUILD}/isl && pushd ${BUILD}/isl
 ${SOURCE}/isl-${ISL_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
-  --enable-shared                      \
-  --disable-static                     \
   --with-gmp-prefix=${PREFIX}
 make -j`nproc`
 make install
@@ -224,8 +203,6 @@ mkdir -p ${BUILD}/expat && pushd ${BUILD}/expat
 ${SOURCE}/expat-${EXPAT_VERSION}/configure \
   --prefix=${PREFIX}                       \
   --host=${TARGET}                         \
-  --enable-shared                          \
-  --disable-static                         \
   --without-examples                       \
   --without-tests
 make -j`nproc`
@@ -277,11 +254,8 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --target=${TARGET}                   \
   --host=${TARGET}                     \
   --disable-dependency-tracking        \
-  --disable-nls                        \
   --disable-multilib                   \
   --disable-werror                     \
-  --enable-shared                      \
-  --disable-static                     \
   --enable-lto                         \
   --enable-languages=c,c++,lto         \
   --enable-libgomp                     \
@@ -289,8 +263,6 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --enable-checking=release            \
   --enable-mingw-wildcard              \
   --enable-large-address-aware         \
-  --disable-libstdcxx-pch              \
-  --disable-libstdcxx-verbose          \
   --disable-win32-registry             \
   --with-tune=intel                    \
   ${EXTRA_GCC_ARGS}                    \
@@ -304,9 +276,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --prefix=${FINAL}/${TARGET}                                                   \
   --with-sysroot=${FINAL}/${TARGET}                                             \
   --host=${TARGET}                                                              \
-  --disable-dependency-tracking                                                 \
-  --enable-shared                                                               \
-  --disable-static
+  --disable-dependency-tracking                                                 
 make -j`nproc`
 make install
 popd
