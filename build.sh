@@ -88,7 +88,7 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --target=${TARGET}                             \
   --disable-multilib                             \
   --disable-werror
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -96,7 +96,7 @@ mkdir -p ${BUILD}/x-mingw-w64-headers && pushd ${BUILD}/x-mingw-w64-headers
 ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-headers/configure \
   --prefix=${BOOTSTRAP}                                           \
   --host=${TARGET}
-make -j`nproc`
+make -j8
 make install
 ln -sTf ${BOOTSTRAP} ${BOOTSTRAP}/mingw
 popd
@@ -114,7 +114,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --enable-checking=release            \
   --enable-large-address-aware         \
   ${EXTRA_GCC_ARGS}
-make -j`nproc` all-gcc
+make -j8 all-gcc
 make install-gcc
 popd
 
@@ -128,7 +128,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-crt/configure \
   --disable-dependency-tracking                               \
   --enable-warnings=0                                         \
   ${EXTRA_CRT_ARGS}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -138,12 +138,12 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${BOOTSTRAP}                                                   \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 
-make -j`nproc`
+make -j8
 make install
 popd
 
 pushd ${BUILD}/x-gcc
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -159,7 +159,7 @@ cmake ${SOURCE}/zstd-${ZSTD_VERSION}/build/cmake \
   -DZSTD_BUILD_PROGRAMS=OFF                      \
   -DZSTD_BUILD_CONTRIB=OFF                       \
   -DZSTD_BUILD_TESTS=OFF
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -168,7 +168,7 @@ ${SOURCE}/gmp-${GMP_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
   --enable-fat
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -177,7 +177,7 @@ ${SOURCE}/mpfr-${MPFR_VERSION}/configure \
   --prefix=${PREFIX}                     \
   --host=${TARGET}                       \
   --with-gmp-build=${BUILD}/gmp
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -186,7 +186,7 @@ ${SOURCE}/mpc-${MPC_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
   --with-{gmp,mpfr}=${PREFIX}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -195,7 +195,7 @@ ${SOURCE}/isl-${ISL_VERSION}/configure \
   --prefix=${PREFIX}                   \
   --host=${TARGET}                     \
   --with-gmp-prefix=${PREFIX}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -205,7 +205,7 @@ ${SOURCE}/expat-${EXPAT_VERSION}/configure \
   --host=${TARGET}                         \
   --without-examples                       \
   --without-tests
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -222,7 +222,7 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --disable-multilib                             \
   --disable-werror                               \
   --with-{gmp,mpfr,mpc,isl}=${PREFIX}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -230,7 +230,7 @@ mkdir -p ${BUILD}/mingw-w64-headers && pushd ${BUILD}/mingw-w64-headers
 ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-headers/configure \
   --prefix=${FINAL}/${TARGET}                                     \
   --host=${TARGET}
-make -j`nproc`
+make -j8
 make install
 ln -sTf ${FINAL}/${TARGET} ${FINAL}/mingw
 popd
@@ -243,7 +243,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-crt/configure \
   --disable-dependency-tracking                               \
   --enable-warnings=0                                         \
   ${EXTRA_CRT_ARGS}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -267,7 +267,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --with-tune=intel                    \
   ${EXTRA_GCC_ARGS}                    \
   --with-{gmp,mpfr,mpc,isl,zstd}=${PREFIX}
-make -j`nproc`
+make -j8
 make install
 popd
 
@@ -277,7 +277,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${FINAL}/${TARGET}                                             \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 
-make -j`nproc`
+make -j8
 make install
 popd
 
