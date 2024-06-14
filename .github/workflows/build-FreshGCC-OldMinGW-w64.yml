@@ -30,8 +30,8 @@ jobs:
             make            \
             curl            \
             m4              \
-            gcc             \
-            g++
+            gcc-5           \
+            g++-5
 
       - name: build 32-bit
         id: build32
