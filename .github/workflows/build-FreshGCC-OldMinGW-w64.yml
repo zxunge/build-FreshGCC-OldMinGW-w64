@@ -16,6 +16,7 @@ jobs:
       - name: install dependencies
         run: |
           sudo sh -c "echo 'deb http://dk.archive.ubuntu.com/ubuntu/ bionic main universe' >> /etc/apt/sources.list"
+          sudo apt update
           sudo apt install gcc-6 g++-6 -y
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
           gcc -v
