@@ -70,12 +70,12 @@ PREFIX=`pwd`/prefix/${TARGET}
 FINAL=`pwd`/${NAME}
 
 get https://github.com/facebook/zstd/releases/download/v${ZSTD_VERSION}/zstd-${ZSTD_VERSION}.tar.gz
-get https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.xz
-get https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFR_VERSION}.tar.xz
+get https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.gz
+get https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFR_VERSION}.tar.gz
 get https://ftp.gnu.org/gnu/mpc/mpc-${MPC_VERSION}.tar.gz
-get https://libisl.sourceforge.io/isl-${ISL_VERSION}.tar.xz
+get https://libisl.sourceforge.io/isl-${ISL_VERSION}.tar.gz
 get https://github.com/libexpat/libexpat/releases/download/R_${EXPAT_VERSION//./_}/expat-${EXPAT_VERSION}.tar.xz
-get https://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
+get https://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.gz
 get https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz
 get https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v${MINGW_VERSION}.tar.bz2
 
