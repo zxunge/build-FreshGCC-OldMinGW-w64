@@ -15,7 +15,7 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt install gcc-7 g++-7 --reinstall
+          sudo apt install gcc-9 g++-9 --reinstall
           sudo apt-get install --no-install-recommends -y \
             ca-certificates \
             gettext         \
@@ -30,7 +30,8 @@ jobs:
             cmake           \
             make            \
             curl            \
-            m4              
+            m4             
+          gcc -v
 
       - name: build 32-bit
         id: build32
