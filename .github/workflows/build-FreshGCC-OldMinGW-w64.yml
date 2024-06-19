@@ -15,8 +15,6 @@ jobs:
 
       - name: install dependencies
         run: |
-          sudo apt install gcc-9 g++-9 --reinstall
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
           sudo apt-get install --no-install-recommends -y \
             ca-certificates \
             gettext         \
@@ -31,8 +29,10 @@ jobs:
             cmake           \
             make            \
             curl            \
-            m4             
-          gcc -v
+            m4              \
+            gcc             \
+            g++
+          
 
       - name: build 32-bit
         id: build32
