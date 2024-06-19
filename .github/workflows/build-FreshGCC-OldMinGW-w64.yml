@@ -31,7 +31,8 @@ jobs:
             curl            \
             m4              \
             gcc             \
-            g++
+            g++             \
+            cc
           
 
       - name: build 32-bit
