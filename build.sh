@@ -9,7 +9,7 @@ MPC_VERSION=1.0.1
 ISL_VERSION=0.26
 EXPAT_VERSION=2.6.2
 BINUTILS_VERSION=2.29
-GCC_VERSION=12.2.0
+GCC_VERSION=14.1.0
 MINGW_VERSION=10.0.0
 
 ARG=${1:-64}
@@ -86,8 +86,6 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --prefix=${BOOTSTRAP}                          \
   --with-sysroot=${BOOTSTRAP}                    \
   --target=${TARGET}                             \
-  --disable-plugins                              \
-  --disable-shared                               \
   --disable-multilib                             \
   --disable-werror
 make -j10
@@ -108,12 +106,11 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --prefix=${BOOTSTRAP}                \
   --with-sysroot=${BOOTSTRAP}          \
   --target=${TARGET}                   \
-  --enable-static                      \
-  --disable-shared                     \
+  --enable-shared                      \
   --disable-multilib                   \
   --disable-werror                     \
   --disable-libgomp                    \
-  --enable-languages=c,c++             \
+  --enable-languages=c,c++,fortran     \
   --enable-threads=posix               \
   --enable-checking=release            \
   --enable-large-address-aware         \
@@ -144,8 +141,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${BOOTSTRAP}                                                   \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
-  --enable-static                                                               \
-  --disable-shared
+  --enable-shared
 make -j10
 make install
 popd
@@ -275,8 +271,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-dependency-tracking        \
   --disable-multilib                   \
   --disable-werror                     \
-  --disable-shared                     \
-  --enable-static                      \
+  --enable-shared                      \
   --enable-lto                         \
   --enable-languages=c,c++,lto         \
   --enable-libgomp                     \
@@ -300,8 +295,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --with-sysroot=${FINAL}/${TARGET}                                             \
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
-  --disable-shared                                                              \
-  --enable-static
+  --enable-shared
 make -j10
 make install
 popd
