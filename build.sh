@@ -88,7 +88,7 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --target=${TARGET}                             \
   --disable-multilib                             \
   --disable-werror
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -96,7 +96,7 @@ mkdir -p ${BUILD}/x-mingw-w64-headers && pushd ${BUILD}/x-mingw-w64-headers
 ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-headers/configure \
   --prefix=${BOOTSTRAP}                                           \
   --host=${TARGET}
-make -j10
+make -j$(nproc)
 make install
 ln -sTf ${BOOTSTRAP} ${BOOTSTRAP}/mingw
 popd
@@ -117,7 +117,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-libstdcxx-pch              \
   --disable-libstdcxx-verbose          \
   ${EXTRA_GCC_ARGS}
-make -j10 all-gcc
+make -j$(nproc) all-gcc
 make install-gcc
 popd
 
@@ -131,7 +131,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-crt/configure \
   --disable-dependency-tracking                               \
   --enable-warnings=0                                         \
   ${EXTRA_CRT_ARGS}
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -142,12 +142,12 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
   --enable-shared
-make -j10
+make -j$(nproc)
 make install
 popd
 
 pushd ${BUILD}/x-gcc
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -165,7 +165,7 @@ cmake ${SOURCE}/zstd-${ZSTD_VERSION}/build/cmake \
   -DZSTD_BUILD_PROGRAMS=OFF                      \
   -DZSTD_BUILD_CONTRIB=OFF                       \
   -DZSTD_BUILD_TESTS=OFF
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -176,7 +176,7 @@ ${SOURCE}/gmp-${GMP_VERSION}/configure \
   --disable-shared                     \
   --enable-static                      \
   --enable-fat
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -187,7 +187,7 @@ ${SOURCE}/mpfr-${MPFR_VERSION}/configure \
   --disable-shared                       \
   --enable-static                        \
   --with-gmp-build=${BUILD}/gmp
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -198,7 +198,7 @@ ${SOURCE}/mpc-${MPC_VERSION}/configure \
   --disable-shared                     \
   --enable-static                      \
   --with-{gmp,mpfr}=${PREFIX}
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -209,7 +209,7 @@ ${SOURCE}/isl-${ISL_VERSION}/configure \
   --disable-shared                     \
   --enable-static                      \
   --with-gmp-prefix=${PREFIX}
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -221,7 +221,7 @@ ${SOURCE}/expat-${EXPAT_VERSION}/configure \
   --enable-static                          \
   --without-examples                       \
   --without-tests
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -237,7 +237,7 @@ ${SOURCE}/binutils-${BINUTILS_VERSION}/configure \
   --disable-multilib                             \
   --disable-werror                               \
   --with-{gmp,mpfr,mpc,isl}=${PREFIX}
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -245,7 +245,7 @@ mkdir -p ${BUILD}/mingw-w64-headers && pushd ${BUILD}/mingw-w64-headers
 ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-headers/configure \
   --prefix=${FINAL}/${TARGET}                                     \
   --host=${TARGET}
-make -j10
+make -j$(nproc)
 make install
 ln -sTf ${FINAL}/${TARGET} ${FINAL}/mingw
 popd
@@ -258,7 +258,7 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-crt/configure \
   --disable-dependency-tracking                               \
   --enable-warnings=0                                         \
   ${EXTRA_CRT_ARGS}
-make -j10
+make -j$(nproc)
 make install
 popd
 
@@ -272,8 +272,10 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-multilib                   \
   --disable-werror                     \
   --enable-shared                      \
+  --disable-static                     \
+  --enable-nls                         \
   --enable-lto                         \
-  --enable-languages=c,c++,lto         \
+  --enable-languages=c,c++,lto,fortran,d         \
   --enable-libgomp                     \
   --enable-threads=posix               \
   --enable-checking=release            \
@@ -285,7 +287,8 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --with-tune=intel                    \
   ${EXTRA_GCC_ARGS}                    \
   --with-{gmp,mpfr,mpc,isl,zstd}=${PREFIX}
-make -j10
+cp -r share/locale/* ${FINAL}/share/locale/
+make -j$(nproc)
 make install
 popd
 
@@ -296,14 +299,9 @@ ${SOURCE}/mingw-w64-v${MINGW_VERSION}/mingw-w64-libraries/winpthreads/configure 
   --host=${TARGET}                                                              \
   --disable-dependency-tracking                                                 \
   --enable-shared
-make -j10
+make -j$(nproc)
 make install
 popd
-
-rm -rf ${FINAL}/bin/${TARGET}-*
-rm -rf ${FINAL}/bin/ld.bfd.exe ${FINAL}/${TARGET}/bin/ld.bfd.exe
-rm -rf ${FINAL}/lib/bfd-plugins/libdep.dll.a
-rm -rf ${FINAL}/share
 
 find ${FINAL} -name '*.exe' -print0 | xargs -0 -n 8 -P 2 ${TARGET}-strip --strip-unneeded
 find ${FINAL} -name '*.dll' -print0 | xargs -0 -n 8 -P 2 ${TARGET}-strip --strip-unneeded
