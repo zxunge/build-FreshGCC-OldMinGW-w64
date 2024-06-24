@@ -31,7 +31,9 @@ jobs:
             curl            \
             m4              \
             gcc             \
-            g++             
+            g++             \
+            gdc             \
+            gnat
           
 
       - name: build 32-bit
