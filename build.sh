@@ -287,7 +287,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --with-tune=intel                    \
   ${EXTRA_GCC_ARGS}                    \
   --with-{gmp,mpfr,mpc,isl,zstd}=${PREFIX}
-cp -r ${SOURCE}/gcc-${GCC_VERSION}/share/locale/* ${FINAL}/share/locale/
+#cp -r ${SOURCE}/gcc-${GCC_VERSION}/share/locale/* ${FINAL}/share/locale/
 make -j$(nproc)
 make install
 popd
