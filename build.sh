@@ -275,7 +275,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-static                     \
   --enable-nls                         \
   --enable-lto                         \
-  --enable-languages=c,c++,lto,fortran,ada,objc         \
+  --enable-languages=all               \
   --enable-libgomp                     \
   --enable-threads=posix               \
   --enable-checking=release            \
