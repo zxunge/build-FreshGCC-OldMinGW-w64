@@ -108,9 +108,10 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --target=${TARGET}                   \
   --enable-shared                      \
   --disable-multilib                   \
+  --enable-lto                         \
   --disable-werror                     \
   --disable-libgomp                    \
-  --enable-languages=c,c++,fortran     \
+  --enable-languages=c,c++,fortran,d,ada,objc++,objc,lto,jit     \
   --enable-threads=posix               \
   --enable-checking=release            \
   --enable-large-address-aware         \
@@ -275,7 +276,7 @@ ${SOURCE}/gcc-${GCC_VERSION}/configure \
   --disable-static                     \
   --enable-nls                         \
   --enable-lto                         \
-  --enable-languages=c,c++,d,fortran,jit,lto,objc,obj-c++ \
+  --enable-languages=c,c++,d,fortran,jit,lto,objc,obj-c++,ada \
   --enable-libgomp                     \
   --enable-threads=posix               \
   --enable-checking=release            \
